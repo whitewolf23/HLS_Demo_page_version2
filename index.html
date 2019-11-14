@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!--  HLS 적용 cdn -->
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+        <title>Demo Page</title>
+        <style>
+            #v1 { margin:0; background:black; }
+        </style>
+    </head>
+    
+    
+
+    <body>
+        <h1>Dev</h1>
+        <video id="video" controls ></video>
+        <!-- <video id="v1" type="application/x-mpegURL" width="640" height="360" 
+            src="https://d50mxyhpwb8oh.cloudfront.net/test/Yeon2/jh+jh+jh.m3u8" 
+            controls autoplay="true">
+        </video> -->
+
+        <!-- <h1>Prod</h1>
+        <video id="v2" type="application/x-mpegURL" width="640" height="360" 
+            src="https://dcymer9183hvu.cloudfront.net/S/%EC%84%9C%EC%9A%B8%EA%B0%80%EC%9A%94%EB%8C%80%EC%83%81/%EB%A0%88%EB%93%9C%EC%B9%B4%ED%8E%AB/%EB%A0%88%EB%93%9C%EB%B2%A8%EB%B2%B3/a.m3u8"
+            controls autoplay>
+        </video>
+
+        <h1>Prod</h1>
+        <video id="v3" width="640" height="360" 
+            src="https://dcymer9183hvu.cloudfront.net/test/mp4/73f3e7b_t34.mp4" controls autoplay> -->
+        </video>
+
+    </body>
+
+</html>
+
+<script>
+    // var config = {
+    //     debug: true,
+    //     xhrSetup: function (xhr,url) {
+    //     xhr.withCredentials = true; // do send cookie
+    //     xhr.setRequestHeader("Access-Control-Allow-Headers","Content-Type, Accept, X-Requested-With");
+    //         xhr.setRequestHeader("Access-Control-Allow-Origin","http://sybdomain.domain.com:8080");
+    //     xhr.setRequestHeader("Access-Control-Allow-Credentials","true");
+    //     }
+    // };
+
+        
+        
+        var url;
+        const test= "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+        const v1 = "https://d50mxyhpwb8oh.cloudfront.net/test/Yeon2/jh+jh+jh.m3u8";
+        // const v2 = "https://dcymer9183hvu.cloudfront.net/S/%EC%84%9C%EC%9A%B8%EA%B0%80%EC%9A%94%EB%8C%80%EC%83%81/%EB%A0%88%EB%93%9C%EC%B9%B4%ED%8E%AB/%EB%A0%88%EB%93%9C%EB%B2%A8%EB%B2%B3/a.m3u8";
+        // const v3 = "https://dcymer9183hvu.cloudfront.net/test/mp4/73f3e7b_t34.mp4"
+        if (Hls.isSupported()) {
+            console.log("hello hls.js!");
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+
+            // bind them together
+                hls.attachMedia(video);
+
+                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                    console.log("video and hls.js are now bound together !");
+                    
+                    hls.loadSource(v1);
+                    // hls.loadSource(v1).then((res) => {
+                    //     console.log('tjdrhd!!!')
+                    //     console.log(res.json())
+                    // });
+
+                    hls.loadSource(getData(v1));
+                    
+                    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        console.log("manifest loaded, found " + data.levels.length + " quality level");
+                    });
+                });            
+            }
+        }
+         // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+         // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
+         // This is using the built-in support of the plain video element, without using hls.js.
+         // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
+         // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
+         else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+             video.src = v1;
+             video.addEventListener('loadedmetadata', function() {
+             video.play();
+             });
+         }
+
+        
+         const req = new Request(v1, {
+            method: "OPTIONS",
+            headers: new Headers({
+                "Content-type": "application/vnd.apple.mpegurl",
+                "Access-Control-Allow-Methods": "GET",
+                "Access-Control-Allow-Origin": "*" 
+            }),
+        });
+
+
+        function getData(url) {
+            console.log(url)
+            return fetch(url, {
+                 credentials: 'same-origin',
+                 mode : "no-cors",
+            })
+            .then((res) => {
+                console.log(res)
+            })
+        }
+
+        // function getData(url) {
+        //     fetch(url, {
+        //         headers : {
+        //             "Content-type": "application/vnd.apple.mpegurl",
+        //             "Access-Control-Allow-Methods": "OPTIONS",
+        //             "Access-Control-Allow-Origin": "*",
+        //             "mode" : "no-cors",
+        //         }
+        //     })
+        //     .then((res) => {
+        //         res.headers({
+        //             "Content-type": "application/vnd.apple.mpegurl",
+        //             "Access-Control-Allow-Methods": "OPTIONS",
+        //             "Access-Control-Allow-Origin": "*",
+        //             "mode" : "no-cors",
+        //         })
+        //         console.log(res.json())
+        //     })
+            
+        // }
+
+
+
+
+
+
+
+        // function getData(url) {
+        //     fetch(url, {
+        //         headers:{
+        //             "Access-Control-Allow-Methods": "GET",
+        //             "Access-Control-Allow-Origin": "*" 
+        //         }
+        //     })
+        //     .then(response => response.text())
+        //     .then(contents => console.log(contents))
+        //     .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))       
+        //  }
+     </script>

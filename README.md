@@ -6,8 +6,12 @@
 
 
 ## 업데이트 
+1. lite-server 를 이용
 
-
+```
+npm i -g lite-server
+```
+2. 파일명은 index.html 로 해야한다. -> 그렇지 않으면 lite-server 에서 인식 하지 못함
 
 > 대응 브라우저 
 1. Chrome

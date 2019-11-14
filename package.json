@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/whitewolf23/HLS_Demo_page_version2/issues"
   },
-  "homepage": "https://github.com/whitewolf23/HLS_Demo_page_version2#readme"
+  "homepage": "https://github.com/whitewolf23/HLS_Demo_page_version2#readme",
+  "permissions": [
+    "tabs",
+    "*://*/*.m3u8*",
+    "webRequest",
+    "webRequestBlocking",
+    "contextMenus"
+  ],
+  "dependencies": {
+    "hls.js": "^0.12.4"
+  }
 }
