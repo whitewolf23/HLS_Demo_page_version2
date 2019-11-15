@@ -1,0 +1,70 @@
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" href="../style.css" />
+<div id="nav" class="topnav"> </div>
+<script>
+    $(function(){
+        $("#nav").load("./nav.html");
+    });
+</script>
+
+<h1>Ply 플레이어</h1>
+<!-- plyr -->
+<video controls crossorigin playsinline poster="http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"></video>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+	const source = ["https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"];
+	const video = document.querySelectorAll('video');
+	
+	for (var i = 0; i < video.length; i++) {
+		const player = new Plyr(video[i], {captions: {active: true, update: true, language: 'en'}});
+	
+		if (!Hls.isSupported()) {
+			video[i].src = source[i];
+		} else {
+			const hls = new Hls();
+			hls.loadSource(source[i]);
+			hls.attachMedia(video[i]);
+			window.hls = hls;
+		// Handle changing captions
+		player.on('languagechange', () => {
+			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
+			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+		});
+	}
+	window.player = player;
+	}
+});
+
+
+
+
+
+
+
+
+
+
+    // (function () {
+
+    // var video = document.querySelector('#player');
+    
+    // if (Hls.isSupported()) {
+    //     var hls = new Hls();
+    //     hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
+    //     hls.attachMedia(video);
+    //     hls.on(Hls.Events.MANIFEST_PARSED,function() {
+    //     video.play();
+    //     });
+    // }
+    // // 
+    // plyr.setup(video);
+    // })();
+</script>
+        

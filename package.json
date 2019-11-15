@@ -25,6 +25,8 @@
     "contextMenus"
   ],
   "dependencies": {
-    "hls.js": "^0.12.4"
+    "hls.js": "^0.12.4",
+    "openplayerjs": "^1.13.1",
+    "plyr": "^3.5.6"
   }
 }

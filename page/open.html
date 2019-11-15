@@ -1,0 +1,16 @@
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" href="../style.css" />
+<div id="nav" class="topnav"> </div>
+<script>
+    $(function(){
+        $("#nav").load("./nav.html");
+    });
+</script>
+
+<h1>오픈 플레이어</h1>
+ <!-- open player.js -->
+<video id="video" class="op-player op-player__media" width="640" height="360" controls playsinline>
+    <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="application/x-mpegURL"/>
+</video>
+<script src="https://cdn.jsdelivr.net/npm/openplayerjs@1.13.1/dist/openplayer.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openplayerjs@1.13.1/dist/openplayer.min.css">

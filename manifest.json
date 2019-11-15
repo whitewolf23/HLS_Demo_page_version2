@@ -1,8 +1,0 @@
-{
-    "name": "hls_demo_page_version2",
-    "version": "0.12.4",
-    "permissions": [
-    "https://*/" 
-    ]
-}
-  
