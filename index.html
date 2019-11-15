@@ -7,6 +7,11 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!--  HLS 적용 cdn -->
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+        <!-- <script src="//unpkg.com/xdomain@0.8.2/dist/xdomain.min.js"></script> -->
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://cdn.fluidplayer.com/v2/current/fluidplayer.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.fluidplayer.com/v2/current/fluidplayer.min.css" type="text/css"/>
 
         <title>Demo Page</title>
         <style>
@@ -19,6 +24,16 @@
     <body>
         <h1>Dev</h1>
         <video id="video" controls ></video>
+
+
+        <!-- fluid player -->
+        <!-- <video id="video" >  -->
+            <!-- <source src="https://cdn.fluidplayer.com/videos/valerian-480p.mkv" type="video/mp4"/> -->
+         <!-- </video> -->
+
+
+
+        <!-- <script src="player.js"></script> -->
         <!-- <video id="v1" type="application/x-mpegURL" width="640" height="360" 
             src="https://d50mxyhpwb8oh.cloudfront.net/test/Yeon2/jh+jh+jh.m3u8" 
             controls autoplay="true">
@@ -33,11 +48,14 @@
         <h1>Prod</h1>
         <video id="v3" width="640" height="360" 
             src="https://dcymer9183hvu.cloudfront.net/test/mp4/73f3e7b_t34.mp4" controls autoplay> -->
-        </video>
+        <!-- </video> -->
 
     </body>
 
 </html>
+
+<!-- fluidPlayer -->
+<!-- <script> fluidPlayer("video"); </script> -->
 
 <script>
     // var config = {
@@ -52,7 +70,6 @@
 
         
         
-        var url;
         const test= "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
         const v1 = "https://d50mxyhpwb8oh.cloudfront.net/test/Yeon2/jh+jh+jh.m3u8";
         // const v2 = "https://dcymer9183hvu.cloudfront.net/S/%EC%84%9C%EC%9A%B8%EA%B0%80%EC%9A%94%EB%8C%80%EC%83%81/%EB%A0%88%EB%93%9C%EC%B9%B4%ED%8E%AB/%EB%A0%88%EB%93%9C%EB%B2%A8%EB%B2%B3/a.m3u8";
@@ -69,12 +86,8 @@
                     console.log("video and hls.js are now bound together !");
                     
                     hls.loadSource(v1);
-                    // hls.loadSource(v1).then((res) => {
-                    //     console.log('tjdrhd!!!')
-                    //     console.log(res.json())
-                    // });
+                    // hls.loadSource(getCORS(v1));
 
-                    hls.loadSource(getData(v1));
                     
                     hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
                         console.log("manifest loaded, found " + data.levels.length + " quality level");
@@ -94,64 +107,87 @@
              });
          }
 
-        
-         const req = new Request(v1, {
-            method: "OPTIONS",
-            headers: new Headers({
-                "Content-type": "application/vnd.apple.mpegurl",
-                "Access-Control-Allow-Methods": "GET",
-                "Access-Control-Allow-Origin": "*" 
-            }),
-        });
+        //  v1
+        //  var req = new XMLHttpRequest();
+        //     req.open('GET', v1, true);
+        //     req.onreadystatechange = function (aEvt) {
+        //     if (req.readyState == 4) {
+        //         console.log("Status: ", req.status);
+        //         console.log("Response message: ", req.responseText);
+        //     }
+        //     };
+        // req.send(null);
+
+        // // test
+        // var req = new XMLHttpRequest();
+        //     req.open('GET', test, true);
+        //     req.onreadystatechange = function (aEvt) {
+        //     if (req.readyState == 4) {
+        //         console.log("Status: ", req.status);
+        //         console.log("Response message: ", req.responseText);
+        //     }
+        //     };
+        // req.send(null);
+         
 
 
-        function getData(url) {
-            console.log(url)
-            return fetch(url, {
-                 credentials: 'same-origin',
-                 mode : "no-cors",
-            })
-            .then((res) => {
-                console.log(res)
-            })
-        }
+        //  fetch(v1).then((res) => {
+        //      console.log('v1',res)
+        //  })
 
-        // function getData(url) {
-        //     fetch(url, {
-        //         headers : {
-        //             "Content-type": "application/vnd.apple.mpegurl",
-        //             "Access-Control-Allow-Methods": "OPTIONS",
-        //             "Access-Control-Allow-Origin": "*",
-        //             "mode" : "no-cors",
-        //         }
-        //     })
-        //     .then((res) => {
-        //         res.headers({
-        //             "Content-type": "application/vnd.apple.mpegurl",
-        //             "Access-Control-Allow-Methods": "OPTIONS",
-        //             "Access-Control-Allow-Origin": "*",
-        //             "mode" : "no-cors",
-        //         })
-        //         console.log(res.json())
-        //     })
-            
+        //  fetch(test).then((res) => {
+        //      console.log('test',res)
+        //  })
+
+
+
+            // function getCORS(url){
+            //     var xhr = $.ajax({
+            //         type: 'GET',
+            //         url: url,
+            //         // dataType: 'json'
+            //     });
+            // }
+
+
+
+        //  getCORS(v1, function(request){
+        //     var response = request.currentTarget.response || request.target.responseText;
+        //     console.log('res',response);
+        // });
+
+
+        //  function getCORS(url, success) {
+        //     var xhr = new XMLHttpRequest();
+        //     if (!('withCredentials' in xhr)) xhr = new XDomainRequest(); // fix IE8/9
+        //     xhr.open('GET', url);
+        //     xhr.onload = success;
+        //     xhr.send();
+        //     return xhr;
         // }
 
-
-
-
-
-
-
-        // function getData(url) {
-        //     fetch(url, {
-        //         headers:{
-        //             "Access-Control-Allow-Methods": "GET",
-        //             "Access-Control-Allow-Origin": "*" 
+        //  function callAjax(url, callback){
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("GET", url, true);
+        //     xhr.responseType = 'application/vnd.apple.mpegurl';
+        //     xhr.processData = false;
+        //     xhr.contentType = false;
+        //     xhr.onload = function() {
+        //         // Successful request
+        //         if (xhr.status == 200) {
+        //             success(xhr.response);
         //         }
-        //     })
-        //     .then(response => response.text())
-        //     .then(contents => console.log(contents))
-        //     .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))       
-        //  }
+        //     };
+        //     xhr.onerror = function() {
+        //         // Crossdomain request denied
+        //         if (xhr.status === 0) {
+        //             corsFailed(xhr.response);
+        //         }
+        //     };
+        //     xhr.crossDomain = true;
+        //     xhr.withCredentials = true;
+        //     xhr.send();
+        // }
+       
+
      </script>
